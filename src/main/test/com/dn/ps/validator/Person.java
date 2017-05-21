@@ -7,4 +7,16 @@ public class Person {
 	String getName() {
 		return name;
 	}
+	
+	void setName(String name) {
+		this.name = name;
+	}
+	
+	String getNull() {
+		return null;
+	}
+	
+	int getAge() {
+		return 24;
+	}
 }
