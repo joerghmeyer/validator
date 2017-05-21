@@ -14,7 +14,7 @@ public class Validator {
 		if (results.isEmpty()) {
 			results = new ArrayList<>();
 		}
-		results.add(message1 + " " + getCodePosition()
+		results.add(message1 + " at " + getCodePosition()
 				+ (message2 == null || message2.length() == 0 ? "" : (" " + message2)));
 	}
 
@@ -54,18 +54,16 @@ public class Validator {
 		if (s.get() == null) {
 			addMessage("value to compare is null");
 		}
-		if (l != null && s.get() != null && compareTo(l, s.get()) > -1) {
-			addMessage("value is smaller than lower bound", message);
-		}
 
-		if (l != null && s.get() != null && compareTo(r, s.get()) < 1) {
-			addMessage("value is bigger than upper bound", message);
-		}
+		if (s.get() != null) {
+			if (l != null && compareTo(l, s.get()) >= 0) {
+				addMessage("value " + s.get() + " is smaller than lower bound " + l, message);
+			}
 
-		// if () {
-		// addMessage("null check failed at " + getCodePosition() +
-		// (message.length() == 0 ? "" : (" " + message)));
-		// }
+			if (r != null && compareTo(r, s.get()) <= 0) {
+				addMessage("value " + s.get() + " is bigger than upper bound " + r, message);
+			}
+		}
 		return this;
 
 	}
