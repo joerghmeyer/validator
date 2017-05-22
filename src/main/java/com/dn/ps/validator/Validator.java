@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Validator {
 
@@ -27,6 +29,26 @@ public class Validator {
 
 	public static Validator start() {
 		return new Validator();
+	}
+
+	Validator matches(final Supplier<String> s, final String regExp) {
+		Pattern pattern;
+		try {
+			pattern = Pattern.compile(regExp);
+		} catch (Exception e) {
+			addMessage("regular expression not parsable " + e.getMessage());
+			return this;
+		}
+
+		try {
+			boolean result = pattern.matcher(s.get()).matches();
+			if (!result) {
+				addMessage("regular expression check fails. " + s.get() + " does not match " + regExp);
+			}
+		} catch (Exception e) {
+			addMessage("regular expression check fails. " + s.get() + " does not match " + regExp);
+		}
+		return this;
 	}
 
 	Validator notNull(final Supplier<?> s) {

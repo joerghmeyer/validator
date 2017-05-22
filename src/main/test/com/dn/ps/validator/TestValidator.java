@@ -96,4 +96,31 @@ public class TestValidator {
 		Assert.assertEquals(false, v.getValidationMessages().isEmpty());
 		System.out.println(v.getValidationMessages());
 	}
+	
+	@Test
+	public void test11() {
+		Validator v = Validator.start();
+		v.matches(p::getName,"N[ma]*e");
+		Assert.assertEquals("validation should not fail", true, v.isValid());
+		Assert.assertEquals(true, v.getValidationMessages().isEmpty());
+	}
+	
+	@Test
+	public void test12() {
+		Validator v = Validator.start();
+		v.matches(p::getName,"N[x]*e");
+		Assert.assertEquals("validation should fail", v.isValid(), false);
+		Assert.assertEquals(false, v.getValidationMessages().isEmpty());
+		System.out.println(v.getValidationMessages());
+	}
+	
+	@Test
+	public void test13() {
+		Validator v = Validator.start();
+		v.matches(p::getName,"N[x]]*e");
+		Assert.assertEquals("validation should fail", v.isValid(), false);
+		Assert.assertEquals(false, v.getValidationMessages().isEmpty());
+		System.out.println(v.getValidationMessages());
+	}
+	
 }
