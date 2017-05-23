@@ -2,12 +2,18 @@ package com.dn.ps.validator;
 
 public class Person {
 	String name = "Name";
+	Car car;
+	
 	int age;
 
 	String getName() {
 		return name;
 	}
 
+	Car getCar() {
+		return car;
+	}
+	
 	void setName(String name) {
 		this.name = name;
 	}

@@ -1,5 +1,8 @@
 package com.dn.ps.validator;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -118,6 +121,16 @@ public class TestValidator {
 	public void test13() {
 		Validator v = Validator.start();
 		v.matches(p::getName,"N[x]]*e");
+		Assert.assertEquals("validation should fail", v.isValid(), false);
+		Assert.assertEquals(false, v.getValidationMessages().isEmpty());
+		System.out.println(v.getValidationMessages());
+	}
+	
+	@Test
+	public void test14() {
+		Validator v = Validator.start();
+		
+		<Car>v.notNull(p::getCar,"car clor should be set", Car::getColor,);
 		Assert.assertEquals("validation should fail", v.isValid(), false);
 		Assert.assertEquals(false, v.getValidationMessages().isEmpty());
 		System.out.println(v.getValidationMessages());

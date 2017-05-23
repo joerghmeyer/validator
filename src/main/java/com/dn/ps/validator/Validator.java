@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -54,10 +54,22 @@ public class Validator {
 	Validator notNull(final Supplier<?> s) {
 		return notNull(s, "");
 	}
+	
+	Validator notNull(final Supplier<?> s, final Function<?,?> f, String message) {
+		return notNull(s, "");
+	}
+	
+   <R>Validator notNull(final Supplier<?> s,  String message, final Function<R,?> ... f) {
+		return notNull(s, "");
+	}
 
 	Validator notNull(final Supplier<?> s, final String message) {
-		if (s.get() == null) {
-			addMessage("null check failed", message);
+		try {
+			if (s.get() == null) {
+				addMessage("null check failed", message);
+			}
+		} catch (Exception e) {
+			addMessage("null check failed", e.getMessage());
 		}
 		return this;
 	}
@@ -73,18 +85,23 @@ public class Validator {
 		if (r == null) {
 			addMessage("right range value is null");
 		}
-		if (s.get() == null) {
-			addMessage("value to compare is null");
-		}
 
-		if (s.get() != null) {
-			if (l != null && compareTo(l, s.get()) >= 0) {
-				addMessage("value " + s.get() + " is smaller than lower bound " + l, message);
+		try {
+			if (s.get() == null) {
+				addMessage("value to compare is null");
 			}
 
-			if (r != null && compareTo(r, s.get()) <= 0) {
-				addMessage("value " + s.get() + " is bigger than upper bound " + r, message);
+			if (s.get() != null) {
+				if (l != null && compareTo(l, s.get()) >= 0) {
+					addMessage("value " + s.get() + " is smaller than lower bound " + l, message);
+				}
+
+				if (r != null && compareTo(r, s.get()) <= 0) {
+					addMessage("value " + s.get() + " is bigger than upper bound " + r, message);
+				}
 			}
+		} catch (final Exception e) {
+			addMessage("number range check failed " + e.getMessage());
 		}
 		return this;
 
